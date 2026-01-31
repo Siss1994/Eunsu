@@ -1,0 +1,489 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Great+Vibes&family=Noto+Serif+KR:wght@400;700;900&display=swap');
+
+:root {
+  --wedding-cream: #FFF8F0;
+  --wedding-gold: #D4A574;
+  --wedding-rose: #E8B4B8;
+  --wedding-deep: #2C1810;
+  --wedding-blush: #F5E6E0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Gowun Batang', serif;
+  background: var(--wedding-cream);
+  color: var(--wedding-deep);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Splash Screen */
+.splash-container {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 30%, #1a0a2e 60%, #0d0520 100%);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.splash-container.fade-out {
+  opacity: 0;
+  transform: scale(1.1);
+  pointer-events: none;
+}
+
+.splash-title {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 900;
+  font-size: clamp(2rem, 8vw, 4rem);
+  color: transparent;
+  background: linear-gradient(135deg, #ffd700, #ffb347, #ffd700, #fff8dc, #ffd700);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-align: center;
+  line-height: 1.4;
+  animation: goldShimmer 3s ease-in-out infinite, titleAppear 1.5s ease-out forwards;
+  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.4));
+  z-index: 2;
+  padding: 0 1rem;
+}
+
+.splash-subtitle {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 1rem;
+  animation: fadeInUp 2s ease-out 0.5s forwards;
+  opacity: 0;
+  z-index: 2;
+}
+
+@keyframes goldShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes titleAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    letter-spacing: 0.5em;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    letter-spacing: 0.05em;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Particle Canvas */
+.particle-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Gallery */
+.gallery-container {
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gallery-slide {
+  height: 100vh;
+  height: 100dvh;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+/* Holographic Card */
+.holo-card-wrapper {
+  perspective: 1200px;
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 3/4;
+}
+
+.holo-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+  cursor: grab;
+  will-change: transform;
+}
+
+.holo-card:active {
+  cursor: grabbing;
+}
+
+.holo-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  display: block;
+}
+
+.holo-card-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: radial-gradient(
+    circle at var(--shine-x, 50%) var(--shine-y, 50%),
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0.1) 20%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: overlay;
+}
+
+.holo-card-rainbow {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: linear-gradient(
+    var(--rainbow-angle, 125deg),
+    transparent 0%,
+    rgba(255, 219, 112, 0.25) 10%,
+    rgba(255, 105, 180, 0.2) 20%,
+    rgba(132, 50, 255, 0.2) 30%,
+    rgba(0, 186, 255, 0.2) 40%,
+    rgba(50, 255, 132, 0.15) 50%,
+    rgba(255, 219, 112, 0.2) 60%,
+    rgba(255, 105, 180, 0.15) 70%,
+    transparent 80%
+  );
+  background-size: 200% 200%;
+  background-position: var(--bg-x, 0%) var(--bg-y, 0%);
+  pointer-events: none;
+  z-index: 3;
+  mix-blend-mode: color-dodge;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.holo-card:hover .holo-card-rainbow,
+.holo-card.touching .holo-card-rainbow {
+  opacity: 1;
+}
+
+.holo-card-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: linear-gradient(
+    var(--glare-angle, 135deg),
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.holo-card:hover .holo-card-glare,
+.holo-card.touching .holo-card-glare {
+  opacity: 1;
+}
+
+.holo-card-border {
+  position: absolute;
+  inset: -2px;
+  border-radius: 22px;
+  background: linear-gradient(
+    var(--rainbow-angle, 125deg),
+    rgba(255, 215, 0, 0.5),
+    rgba(255, 105, 180, 0.5),
+    rgba(100, 149, 237, 0.5),
+    rgba(255, 215, 0, 0.5)
+  );
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.holo-card:hover .holo-card-border,
+.holo-card.touching .holo-card-border {
+  opacity: 1;
+}
+
+.holo-card-shadow {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    0 20px 60px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  pointer-events: none;
+  z-index: -2;
+}
+
+.holo-card:hover .holo-card-shadow,
+.holo-card.touching .holo-card-shadow {
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 30px 80px rgba(0, 0, 0, 0.15);
+}
+
+/* Sparkle effect */
+.holo-sparkles {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  animation: sparkleAnim 2s ease-in-out infinite;
+  box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.6);
+}
+
+@keyframes sparkleAnim {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+/* Music Button */
+.music-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 50;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(44, 24, 16, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  color: var(--wedding-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.music-btn:hover {
+  background: rgba(44, 24, 16, 0.95);
+  transform: scale(1.1);
+}
+
+.music-btn.playing .music-icon {
+  animation: musicPulse 1s ease-in-out infinite;
+}
+
+@keyframes musicPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(44, 24, 16, 0.4);
+  font-size: 0.75rem;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* Upload page */
+.upload-zone {
+  border: 2px dashed var(--wedding-gold);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(255, 248, 240, 0.5);
+}
+
+.upload-zone:hover,
+.upload-zone.drag-over {
+  border-color: var(--wedding-deep);
+  background: rgba(245, 230, 224, 0.8);
+  transform: scale(1.02);
+}
+
+.upload-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.upload-preview-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.upload-preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.upload-progress-bar {
+  height: 100%;
+  background: var(--wedding-gold);
+  transition: width 0.3s ease;
+}
+
+/* Page transition */
+.page-enter {
+  animation: pageEnter 0.8s ease-out forwards;
+}
+
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Counter / indicator */
+.slide-counter {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 50;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 0.85rem;
+  color: rgba(44, 24, 16, 0.5);
+  background: rgba(255, 248, 240, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(212, 165, 116, 0.2);
+}
+
+/* Upload spinner */
+.upload-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  padding: 2rem;
+  color: rgba(44, 24, 16, 0.6);
+}
+
+.empty-state h2 {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--wedding-deep);
+}
+
+.empty-state a {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.75rem 2rem;
+  background: var(--wedding-gold);
+  color: white;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.empty-state a:hover {
+  background: var(--wedding-deep);
+  transform: translateY(-2px);
+}
