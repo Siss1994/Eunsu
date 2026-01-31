@@ -5,6 +5,8 @@ import ParticleCanvas from "@/components/ParticleCanvas";
 import Gallery from "@/components/Gallery";
 import MusicPlayer from "@/components/MusicPlayer";
 
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
   const [images, setImages] = useState<string[]>([]);
@@ -12,13 +14,13 @@ export default function Home() {
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
   const [splashFading, setSplashFading] = useState(false);
 
-  // Fetch image list
+  // Fetch image list from static JSON
   useEffect(() => {
-    fetch("/api/images")
+    fetch(`${BASE}/images.json`)
       .then((res) => res.json())
-      .then((data) => {
-        if (data.images && data.images.length > 0) {
-          setImages(data.images);
+      .then((data: string[]) => {
+        if (data && data.length > 0) {
+          setImages(data.map((src) => `${BASE}${src}`));
         } else {
           setImagesLoaded(true);
         }

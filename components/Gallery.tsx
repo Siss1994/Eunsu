@@ -53,9 +53,10 @@ export default function Gallery({ images }: GalleryProps) {
         </svg>
         <h2>아직 사진이 없어요</h2>
         <p style={{ lineHeight: 1.8 }}>
-          소중한 추억 사진을 업로드해주세요
+          public/images/ 폴더에 사진을 추가하고
+          <br />
+          images.json에 경로를 넣어주세요
         </p>
-        <a href="/upload">사진 업로드하기</a>
       </div>
     );
   }
@@ -102,7 +103,7 @@ export default function Gallery({ images }: GalleryProps) {
           </div>
         ))}
 
-        {/* Upload CTA at the end */}
+        {/* Final slide */}
         <div
           className="gallery-slide"
           data-index={images.length}
@@ -114,9 +115,10 @@ export default function Gallery({ images }: GalleryProps) {
             <p
               style={{
                 fontFamily: "'Noto Serif KR', serif",
-                fontSize: "1.2rem",
+                fontSize: "1.5rem",
                 color: "var(--wedding-deep)",
                 marginBottom: "0.5rem",
+                lineHeight: 1.6,
               }}
             >
               은수야, 결혼 축하해!
@@ -125,28 +127,11 @@ export default function Gallery({ images }: GalleryProps) {
               style={{
                 color: "rgba(44,24,16,0.5)",
                 fontSize: "0.9rem",
-                marginBottom: "2rem",
                 lineHeight: 1.8,
               }}
             >
-              우리의 소중한 추억을 더 남겨볼까?
+              행복하게 잘 살아 ~
             </p>
-            <a
-              href="/upload"
-              style={{
-                display: "inline-block",
-                padding: "0.75rem 2rem",
-                background: "var(--wedding-gold)",
-                color: "white",
-                borderRadius: "30px",
-                textDecoration: "none",
-                fontWeight: 700,
-                transition: "all 0.3s ease",
-                fontFamily: "'Noto Serif KR', serif",
-              }}
-            >
-              사진 더 추가하기
-            </a>
           </div>
         </div>
       </div>

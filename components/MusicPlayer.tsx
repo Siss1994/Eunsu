@@ -187,9 +187,10 @@ export default function MusicPlayer() {
   const [hasMusic, setHasMusic] = useState(false);
   const [usingSynth, setUsingSynth] = useState(false);
 
-  // Try to load external music file, fall back to synthesized music
+  // Try to load external music file from public/, fall back to synthesized music
   useEffect(() => {
-    const audio = new Audio("/api/music");
+    const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
+    const audio = new Audio(`${base}/music/bgm.mp3`);
     audio.loop = true;
     audio.volume = 0.3;
 
