@@ -11,6 +11,8 @@ export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
   const [images, setImages] = useState<string[]>([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadedCount, setLoadedCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
   const [splashFading, setSplashFading] = useState(false);
 
@@ -34,14 +36,16 @@ export default function Home() {
   useEffect(() => {
     if (images.length === 0) return;
 
-    let loadedCount = 0;
     const total = images.length;
+    setTotalCount(total);
+    let count = 0;
 
     images.forEach((src) => {
       const img = new Image();
       img.onload = img.onerror = () => {
-        loadedCount++;
-        if (loadedCount >= total) {
+        count++;
+        setLoadedCount(count);
+        if (count >= total) {
           setImagesLoaded(true);
         }
       };
@@ -84,17 +88,18 @@ export default function Home() {
               결혼을 축하한다!
             </h1>
             <p className="splash-subtitle">Congratulations on your wedding</p>
-            <div
-              style={{
-                position: "absolute",
-                bottom: "3rem",
-                color: "rgba(255,255,255,0.4)",
-                fontSize: "0.8rem",
-                animation: "fadeInUp 2s ease-out 1.5s forwards",
-                opacity: 0,
-              }}
-            >
-              잠시만 기다려주세요...
+            <div className="splash-loading">
+              <div className="loading-bar-track">
+                <div
+                  className="loading-bar-fill"
+                  style={{ width: totalCount > 0 ? `${(loadedCount / totalCount) * 100}%` : '0%' }}
+                />
+              </div>
+              <p className="loading-text">
+                {totalCount > 0
+                  ? `${loadedCount} / ${totalCount}`
+                  : '불러오는 중...'}
+              </p>
             </div>
           </div>
           <ParticleCanvas active={!splashFading} />
